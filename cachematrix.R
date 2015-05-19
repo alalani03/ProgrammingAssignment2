@@ -1,47 +1,42 @@
 ## makeCacheMatrix will take the input of a square matrix and will be used in conjunction 
 ## with cacheSolve to get the matrix, set the inverse of the input square matrix, get the 
 ## inverse to see if it has already been calculated, and if it has not been calculated, it will 
-## use the solve to find the inverse of the square matrix. 
+## use solve() to find the inverse of the square matrix. 
+
 
 ## makeCacheMatrix will be used to set the square matrix, change the square matrix, set the inverse 
-## of the square matrix or get the square matrix by using the special matrix plus the “$” and 
-## one of the list functions within makeCacheMatrix (example, to get the matrix, with “a” 
-## being the matrix, we can use a$get() 
-
-## Does this work?????
+## of the square matrix or get the square matrix using one of the list functions within makeCacheMatrix 
 
 
-makeCacheMatrix <- function(x=matrix()) {
-  m <- NULL
-  set <- function(y) {
-    x <<- y
-    m <<- NULL
+makeCacheMatrix <- function(x=matrix()) { ## user must input info for a square matrix such as matrix(data,nrow=,byrow=T)
+  m <- NULL ## sets m to NULL
+  set <- function(y) { ## one of the 4 list functions within makeCacheMatix which allows user to change the original square matrix
+    x <<- y 
+    m <<- NULL ## if the original square matrix is changed and the inverse has been calculated, then this will set m to NULL
   }
-  get <- function() x
-  setinv <- function(inv) m <<- inv
-  getinv <- function() m
+  get <- function() x ## if the inverse has not been calculated, this will be used by cacheSolve to calculate it 
+  setinv <- function(inv) m <<- inv ## user can set the inverse by calling the a$setinv(). 
+  getinv <- function() m ## use to check if the inverse has already been calculated using the below function 
   list(set = set, get = get,
        setinv = setinv,
-       getinv = getinv)
+       getinv = getinv) ## setting each of the 4 list function 
 }
 
 
-## cacheSolve will first check if the inverse already has been calculated. If yes, it will 
-## display the message “getting cached data.” If the inverse has not been calculated, it will 
-## get the square matrix (x$get()), use the solve() to find the inverse of the matrix, set the 
-## matrix variable “m” within the makeCacheMatrix to the inverse matrix and print the inverse 
-## matrix. This way, if a user input the same square matrix, it will simply display, “getting 
-## cached data.”  
+## cacheSolve will first check if the inverse already has been calculated. If yes, it will display, 
+## getting cached data. If not, it will use the above list functions to calculate and set the inverse 
+## matrix to m 
+
 
 cacheSolve <- function(x, ...) {
-  m <- x$getinv()
-  if(!is.null(m)) {
+  m <- x$getinv() ## checks to see if the inverse exists 
+  if(!is.null(m)) { ## if m is not empty, it will display "getting cached data" and will display the inverse
     message("getting cached data")
     return(m)
   }
-  data <- x$get()
-  m <- solve(data, ...)
-  x$setinv(m)
+  data <- x$get() ## if m is NULL, this will get the special matrix
+  m <- solve(data, ...) ## use the special matrix (data) and find its inverse with solve()
+  x$setinv(m) ## set value of m within makeCacheMatrix so if cacheSolve is run again, it will simply catch the inverse 
   m
 }
 
