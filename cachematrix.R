@@ -8,6 +8,7 @@
 ## one of the list functions within makeCacheMatrix (example, to get the matrix, with “a” 
 ## being the matrix, we can use a$get() 
 
+## Does this work?????
 
 
 makeCacheMatrix <- function(x=matrix()) {
